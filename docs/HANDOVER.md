@@ -1,15 +1,17 @@
 # Handover — moving changhsiju.xyz to Ceci's own GitHub account
 
-**Status (2026-10-13): prepared, NOT yet executed.** The transfer is a
-two-person, browser-only action (GitHub does not let an agent or token do it from
-this environment). Albert initiates it, Ceci accepts it. Everything else in this
-document is the before/after checklist so nothing breaks.
+**Status: DONE 2026-10-13.** The repo now lives at
+[CeciDesign/ceci-portfolio](https://github.com/CeciDesign/ceci-portfolio); Albert
+(`yabroexperiments`) is a collaborator; `www` DNS repointed; Pages redeployed
+and verified from Ceci's account. The checklist below is kept as the record of
+how it was done. Sections A–C were executed in order; only the optional C2
+(GitHub domain verification) is still open.
 
 What is being handed over:
 
 | Thing | Where it lives today | After handover |
 |---|---|---|
-| The whole site + build scripts + Ceci's exports + history | GitHub repo `yabroexperiments/ceci-portfolio` (public, ~200 MB, 93 commits) | `<ceci>/ceci-portfolio` — **transferred**, history intact |
+| The whole site + build scripts + Ceci's exports + history | GitHub repo `yabroexperiments/ceci-portfolio` (public, ~200 MB, 93 commits) | `CeciDesign/ceci-portfolio` — **transferred**, history intact |
 | Hosting | GitHub Pages, deployed by `.github/workflows/pages.yml` on every push to `main` | Same workflow, runs under Ceci's account |
 | Domain `changhsiju.xyz` | **Namecheap, already in Ceci's own account** (confirmed 2026-10-13), DNS → GitHub Pages | Nothing to move. One DNS record to edit after the transfer (step C3) |
 | Files NOT in the repo | Albert's Mac only (see §D) | Zip + send, or nothing — nothing live depends on them |

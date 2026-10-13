@@ -51,9 +51,8 @@ Static replica of [Ceci Chang's UX/UI design portfolio](https://changhsiju.xyz) 
 
 - **Static HTML site** in `site/` deployed by GitHub Actions to GitHub Pages.
 - **Custom domain**: `changhsiju.xyz` (Namecheap, **Ceci's own account**, DNS there) → GitHub Pages IPs.
-- **Ownership handover to Ceci's GitHub account**: runbook in `docs/HANDOVER.md`.
-- **Repo**: [yabroexperiments/ceci-portfolio](https://github.com/yabroexperiments/ceci-portfolio) (public).
-- **GitHub user/email** for git: `yabroexperiments` / `yabroexperiments@gmail.com`.
+- **Repo**: [CeciDesign/ceci-portfolio](https://github.com/CeciDesign/ceci-portfolio) (public). **Owned by Ceci since 2026-10-13** (transferred from `yabroexperiments`, which is now a collaborator; the old URL redirects). Runbook of that handover: `docs/HANDOVER.md`.
+- **Git identity**: commit as yourself. On Albert's Mac that is `yabroexperiments` / `yabroexperiments@gmail.com`; Ceci commits as `CeciDesign`.
 - **Source of truth**: `http://www.changhsiju.com/` (Ceci's IM Creator site). When IM Creator publishes content updates, re-run the ripper.
 
 ## ⚠️ STANDALONE SINCE 2026-08-03 — the repo is the source of truth now
@@ -209,7 +208,7 @@ Workflow: `.github/workflows/pages.yml` — uploads `site/` as a Pages artifact 
 
 DNS (Namecheap Advanced DNS, Ceci's account):
 - `changhsiju.xyz` → 4 A records pointing at GitHub IPs (`185.199.108-111.153`)
-- `www.changhsiju.xyz` → CNAME to `yabroexperiments.github.io`
+- `www.changhsiju.xyz` → CNAME to `cecidesign.github.io`
 - HTTPS via Let's Encrypt (auto-provisioned by GitHub Pages)
 
 ## Local preview
@@ -223,7 +222,7 @@ python3 -m http.server 8765 --directory site
 
 Python 3 with `beautifulsoup4` and `lxml` (`pip3 install beautifulsoup4 lxml`). No npm/node.
 
-`gh` CLI required for repo ops, authenticated as `yabroexperiments`.
+`gh` CLI required for repo ops, authenticated as the owner (`CeciDesign`) or a collaborator (`yabroexperiments`).
 
 ## Revamp — SHIPPED (v2026 design live; last revision 2026-08-13 @ `4e95bbf`)
 
