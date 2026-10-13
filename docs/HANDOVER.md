@@ -11,7 +11,7 @@ What is being handed over:
 |---|---|---|
 | The whole site + build scripts + Ceci's exports + history | GitHub repo `yabroexperiments/ceci-portfolio` (public, ~200 MB, 93 commits) | `<ceci>/ceci-portfolio` — **transferred**, history intact |
 | Hosting | GitHub Pages, deployed by `.github/workflows/pages.yml` on every push to `main` | Same workflow, runs under Ceci's account |
-| Domain `changhsiju.xyz` | Namecheap, **Albert's** account, DNS → GitHub Pages | Albert's call: keep it and manage DNS for her, or push it to her Namecheap account (step C4) |
+| Domain `changhsiju.xyz` | **Cloudflare Registrar + Cloudflare DNS, Albert's** account, DNS → GitHub Pages | Albert's call: keep it and manage DNS for her, or move it to her Cloudflare account (step C4) |
 | Files NOT in the repo | Albert's Mac only (see §D) | Zip + send, or nothing — nothing live depends on them |
 
 Nothing in this repo is secret: it has always been public, so transferring it
@@ -26,10 +26,9 @@ exposes nothing new. Ceci's export (`2026 portfolio/`) is committed in full.
    step below uses it as `<ceci>`.
 2. **Ceci must not already own a repo named `ceci-portfolio`** (GitHub refuses
    the transfer otherwise). Rename hers first if so.
-3. **Check whether `changhsiju.xyz` is a *verified domain* on Albert's account:**
-   github.com → Settings → Pages → "Verified domains". If it is listed, note it:
-   a domain verified on one account cannot be used by another account's Pages
-   site, so it must be removed there right after the transfer (step C2).
+3. ~~Verified domain check~~ — done 2026-10-13: `changhsiju.xyz` is NOT a
+   verified domain on Albert's GitHub account, so nothing blocks Ceci's account
+   from using it. (C2 below is therefore optional hardening, not a fix.)
 4. Make sure `main` is clean and pushed (`git status`, `git log origin/main..`).
    Nothing in flight as of this document.
 
@@ -65,19 +64,26 @@ Order matters. C1–C3 the same day; C4 whenever.
   hard-refresh (`Cmd+Shift+R`) — Pages caches for 10 minutes, so an old page
   right after a deploy is normal.
 
-**C2. Domain verification handoff (only if A3 found it verified).**
-- Albert: Settings → Pages → Verified domains → remove `changhsiju.xyz`.
-- Ceci: Settings → Pages → Add a domain → `changhsiju.xyz`. GitHub shows a TXT
-  record (`_github-pages-challenge-<ceci>` → a token). Whoever controls
-  Namecheap (Albert, until C4) adds it under Advanced DNS, then Ceci clicks
-  Verify. This is optional for serving but protects the domain from being
-  claimed by someone else's Pages site.
+**C2. Domain verification on Ceci's account (optional, recommended).**
+- Ceci: GitHub Settings → Pages → "Add a domain" → `changhsiju.xyz`. GitHub
+  shows a TXT record (`_github-pages-challenge-<ceci>` → a token). Whoever
+  controls the Cloudflare DNS zone (Albert, until C4) adds it under DNS →
+  Records, then Ceci clicks Verify.
+- Not needed for the site to work. It stops any other GitHub account from
+  pointing a Pages site at this domain.
 
-**C3. DNS: repoint `www` (Albert at Namecheap, 1 record).**
-- Advanced DNS → the `CNAME` record for host `www` currently targets
-  `yabroexperiments.github.io`. Change it to **`<ceci>.github.io`**.
-- Leave the four `A` records for `@` (`185.199.108.153` … `185.199.111.153`)
-  exactly as they are — those are GitHub's shared IPs, not account-specific.
+**C3. DNS: repoint `www` (Albert, in Cloudflare → changhsiju.xyz → DNS →
+Records; 1 record).**
+- The `CNAME` record for name `www` currently targets
+  `yabroexperiments.github.io`. Edit it to **`<ceci>.github.io`**.
+- Leave the four `A` records for `changhsiju.xyz` (`185.199.108.153` …
+  `185.199.111.153`) exactly as they are — GitHub's shared IPs, not
+  account-specific.
+- Keep all five records **DNS only (grey cloud), not Proxied**. GitHub issues
+  the Let's Encrypt certificate by seeing its own IPs behind the name; with the
+  orange-cloud proxy on, "Enforce HTTPS" fails or the cert stops renewing.
+  If they are currently proxied and the site works, do not change that today —
+  but if HTTPS ever breaks after the transfer, this is the first thing to check.
 - The old CNAME keeps working for a while because GitHub routes by hostname,
   but it will break the day Albert's account stops hosting anything, so do it
   now while it is fresh.
@@ -85,18 +91,30 @@ Order matters. C1–C3 the same day; C4 whenever.
 **C4. The domain registration itself (Albert's decision).**
 - Option 1 — keep it: Albert keeps paying the yearly renewal and does DNS edits
   on request. Lowest effort, but the site goes dark if the renewal lapses.
-- Option 2 — hand it over: Namecheap → Domain List → Manage → **Sharing &
-  Transfer** → **Change Ownership** → enter Ceci's Namecheap username (she
-  creates a free account first). Free, takes minutes, DNS records travel with
-  the domain. Then she sets up auto-renew with her own card. This is the option
-  that matches "everything in her own account".
+- Option 2 — move it to Ceci's Cloudflare account. Cloudflare Registrar
+  supports this natively ("Move a Cloudflare Registrar domain registration
+  between accounts" in the Registrar docs). What to know before starting:
+  - **The DNS zone does NOT travel.** The source account loses every setting
+    for the domain; only the WHOIS contact moves. So Ceci must first add
+    `changhsiju.xyz` as a site in her Cloudflare account (Free plan) and
+    recreate the five records from C3 there, DNS only. Then the move flips the
+    registration and nameserver ownership to her zone.
+  - Prerequisites: Ceci's Cloudflare **account ID** (Overview page of her
+    account); DNSSEC off on the domain (re-enable on her zone afterwards);
+    registered more than 10 days ago; registrant email verified; no pending
+    change-of-registrant.
+  - Both accounts confirm the move; the registration is then transfer-locked
+    for 30 days and renewals bill to Ceci's card.
+  - Expect a few minutes of possible DNS wobble at the switch; do it at a quiet
+    hour and re-check https://changhsiju.xyz/ afterwards.
 
 **C5. Text in the repo that names the old owner (Ceci's first commit, or Albert
 as collaborator).** None of these affect the live site; they are notes for
 whoever maintains it.
 - `CLAUDE.md`: the "Architecture at a glance" lines for the repo URL and
   GitHub user/email, the DNS line `www → CNAME yabroexperiments.github.io`, and
-  "`gh` CLI … authenticated as `yabroexperiments`".
+  "`gh` CLI … authenticated as `yabroexperiments`". (The registrar/DNS mentions
+  were corrected from Namecheap to Cloudflare on 2026-10-13.)
 - `scripts/dep-vet-guard.mjs` line `OWN_ORG` (auto-passes git deps from the
   owner's own GitHub; there are no such deps, so it is cosmetic).
 - `README.md` was rewritten for this handover and names no account.

@@ -48,5 +48,7 @@ python3 -m http.server 8765 --directory site
 
 - GitHub Pages, source = GitHub Actions (`pages.yml`), custom domain
   `changhsiju.xyz`, HTTPS via Let's Encrypt (automatic).
-- DNS at Namecheap: apex `A` records → GitHub Pages IPs (`185.199.108–111.153`),
-  `www` → `CNAME` to the repo owner's `<username>.github.io`.
+- Domain registered at Cloudflare Registrar, DNS on Cloudflare (records set to
+  DNS only, not proxied): apex `A` records → GitHub Pages IPs
+  (`185.199.108–111.153`), `www` → `CNAME` to the repo owner's
+  `<username>.github.io`.
