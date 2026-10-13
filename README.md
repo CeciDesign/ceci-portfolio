@@ -1,43 +1,52 @@
-# Ceci's Portfolio — Migration
+# Ceci Chang — portfolio site (changhsiju.xyz)
 
-Static migration of [Ceci Chang's portfolio](https://changhsiju.com) off IM Creator (which is in decline) to a self-hosted static site.
+Static site for [Ceci Chang's UX/UI design portfolio](https://changhsiju.xyz),
+hosted on GitHub Pages. Fully self-contained: every page, image and font is in
+this repo; no third-party CDN, no site builder.
 
-## Status
+**Changing hands?** See [`docs/HANDOVER.md`](docs/HANDOVER.md) for the
+account-transfer checklist (repo, Pages, DNS, domain).
 
-| Page | Source | Notes |
-|------|--------|-------|
-| Homepage `/` | 2025-07-10 Wayback snapshot | Full 2023 design |
-| About-me `/about-me` | 2025-07-11 Wayback snapshot | Full 2023 design |
-| HTC project pages (9) | 2019 Wayback snapshots | Older portfolio era — content preserved, design is older |
-| Mozilla project pages (3) | 2019 Wayback snapshots | Same — older era |
-| Acadine project pages (3) | 2019 Wayback snapshots | Same — older era |
-| Binance / TraderWagon / iCardAi / BNCT / Coinful / X.xyz (8) | Captured from IM Creator editor, rendered via clean simplified template | Content preserved, design is a stop-gap (different from rest of site) |
+## What is in here
 
-The 8 captured pages are rendered through a custom Python template (`build_clean.py`) because IM Creator's runtime layout engine couldn't be reproduced statically without their backend.
+| Path | What it is |
+|---|---|
+| `2026 portfolio/` | **Ceci's export — the source of truth.** HTML pages, `images/`, `i18n.js` (EN + zh-Hant strings), `translations-editor.html` (her offline editor; not deployed). |
+| `site/` | **What is deployed.** Generated from the export by `integrate_2026.py`; never hand-edit page content here. Also holds the 23 preserved legacy project pages (`site/<slug>/`) and all assets. |
+| `integrate_2026.py` | The build. Mirrors the export into `site/`, self-hosts fonts, injects SEO/share meta, and **fails** on a missing image, an undefined i18n key or an off-domain reference. |
+| `patches/` | Pages authored for the site rather than exported (e.g. `/about-me/`), applied by the build. |
+| `.github/workflows/pages.yml` | Deploys `site/` to GitHub Pages on every push to `main` (about 1 minute). |
+| `docs/` | Handover checklist, decision notes, session handoffs, asset manifest. |
+| `legacy/`, `rip2.py`, `build_clean.py`, `fix_*.py`, `enrich_meta.py`, `localize_assets.py` | Historical tooling from the 2025–2026 migration off IM Creator. Not part of the current build; kept for reference. |
+| `CLAUDE.md` (= `AGENTS.md`) | Working rules and project memory for AI-assisted sessions. |
 
-## Build pipeline
+## Updating the site
 
+```bash
+# one-time after cloning
+pip3 install beautifulsoup4 lxml
+./setup.sh                      # enables the tracked git hooks
+
+# every update
+#   1. put the new export into "2026 portfolio/"
+python3 integrate_2026.py       # must exit 0 — read its output if it doesn't
+git add -A && git commit -m "Update portfolio" && git push
 ```
-rip2.py          # downloads pages from Wayback Machine
-fix_pages.py     # rewrites dead //xprs.imcreator.com to //www.imcreator.com
-build_clean.py   # for the 8 captured pages: extracts content from /captured/ and renders via clean template
-```
 
-The `/captured/` folder (gitignored) holds the source HTML for the 8 pages downloaded directly from the IM Creator editor.
+GitHub Pages serves the new build within a minute or two. Browsers cache pages
+for 10 minutes, so hard-refresh (`Cmd+Shift+R`) before concluding a change is
+missing.
 
 ## Local preview
 
-```
-cd site && python3 -m http.server 8765
+```bash
+python3 -m http.server 8765 --directory site
 # open http://localhost:8765/
 ```
 
-## Deploying
+## Hosting and domain
 
-The `site/` folder is a static site. Drop it into any static host:
-- GitHub Pages (this repo)
-- Cloudflare Pages, Netlify, Vercel — drag and drop
-
-## Future maintenance
-
-This repo is a stop-gap to preserve the existing portfolio. For long-term editing, the recommended path is rebuilding on **Framer** or a Claude-maintained custom Astro/Next.js site — see conversation notes.
+- GitHub Pages, source = GitHub Actions (`pages.yml`), custom domain
+  `changhsiju.xyz`, HTTPS via Let's Encrypt (automatic).
+- DNS at Namecheap: apex `A` records → GitHub Pages IPs (`185.199.108–111.153`),
+  `www` → `CNAME` to the repo owner's `<username>.github.io`.
