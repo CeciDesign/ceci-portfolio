@@ -50,7 +50,7 @@ Static replica of [Ceci Chang's UX/UI design portfolio](https://changhsiju.xyz) 
 ## Architecture at a glance
 
 - **Static HTML site** in `site/` deployed by GitHub Actions to GitHub Pages.
-- **Custom domain**: `changhsiju.xyz` (Cloudflare Registrar + Cloudflare DNS, DNS-only records) → GitHub Pages IPs.
+- **Custom domain**: `changhsiju.xyz` (Namecheap, **Ceci's own account**, DNS there) → GitHub Pages IPs.
 - **Ownership handover to Ceci's GitHub account**: runbook in `docs/HANDOVER.md`.
 - **Repo**: [yabroexperiments/ceci-portfolio](https://github.com/yabroexperiments/ceci-portfolio) (public).
 - **GitHub user/email** for git: `yabroexperiments` / `yabroexperiments@gmail.com`.
@@ -207,7 +207,7 @@ The 2 `/vbid-3b46eede-...` URLs that appear in the homepage `<a>` scan are IM Cr
 
 Workflow: `.github/workflows/pages.yml` — uploads `site/` as a Pages artifact on every push to `main`. Auto-deploys (~30–60s after push).
 
-DNS (zone at Cloudflare, records DNS-only):
+DNS (Namecheap Advanced DNS, Ceci's account):
 - `changhsiju.xyz` → 4 A records pointing at GitHub IPs (`185.199.108-111.153`)
 - `www.changhsiju.xyz` → CNAME to `yabroexperiments.github.io`
 - HTTPS via Let's Encrypt (auto-provisioned by GitHub Pages)
