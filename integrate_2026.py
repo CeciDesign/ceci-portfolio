@@ -27,6 +27,8 @@ Re-run any time Ceci delivers updated files. Fails loudly if any patch stops
 matching (its cause is gone -> delete it) or any gate fails.
 """
 
+import hashlib
+import json
 import re
 import shutil
 import sys
@@ -65,6 +67,17 @@ WEBP_SKIP = {
     "bnct-app-05.png": "her bnct-app-05.webp is a ZERO-BYTE file — the WebP "
                        "conversion failed for this one image",
 }
+
+# 2026-10-13 (AC): LOSSLESS twins we generate for the PNGs she ships WITHOUT one
+# (31 of 81 at the time; 7 of the 10 homepage images). Made by
+# scripts/make_webp_twins.py into patches/webp/ — pixel-identical to the PNG by
+# construction (the generator refuses anything that is not), 27-60% of its size.
+# patches/webp/manifest.json pins the SHA-256 of the PNG each twin came from, and
+# the build below REFUSES a twin whose PNG changed since (a stale twin would
+# silently show an old screenshot), or whose PNG now has a twin from Ceci (hers
+# wins). Fix is always: python3 scripts/make_webp_twins.py, then re-run this.
+OUR_WEBP_DIR = ROOT / "patches" / "webp"
+OUR_WEBP_MANIFEST = OUR_WEBP_DIR / "manifest.json"
 
 PAGES = {
     "index.html": {
@@ -479,13 +492,49 @@ def main():
             src_names.add(img.name)
             shutil.copy2(img, SITE / "images" / img.name)
             copied += 1
+    # our lossless twins (see OUR_WEBP_DIR above) — verified against the PNG
+    # they were made from, and never over a twin Ceci ships herself
+    ours = 0
+    if OUR_WEBP_MANIFEST.exists():
+        manifest = json.loads(OUR_WEBP_MANIFEST.read_text(encoding="utf-8"))
+        for png_name, row in sorted(manifest.items()):
+            twin_name = png_name[:-4] + ".webp"
+            png = SRC / "images" / png_name
+            fix = "re-run: python3 scripts/make_webp_twins.py"
+            if not png.exists():
+                errors.append(f"patches/webp: {png_name} is gone from her export but the "
+                              f"manifest still lists it — {fix}")
+                continue
+            if twin_name in src_names:
+                errors.append(f"patches/webp: Ceci now ships her own {twin_name}; ours is "
+                              f"redundant (hers wins) — {fix}")
+                continue
+            if hashlib.sha256(png.read_bytes()).hexdigest() != row.get("png_sha256"):
+                errors.append(f"patches/webp: {png_name} CHANGED since {twin_name} was made "
+                              f"— a stale twin would serve an old image — {fix}")
+                continue
+            if row.get("kept_png"):
+                continue
+            twin = OUR_WEBP_DIR / twin_name
+            if not twin.exists():
+                errors.append(f"patches/webp/{twin_name} listed in the manifest but missing — {fix}")
+                continue
+            if hashlib.sha256(twin.read_bytes()).hexdigest() != row.get("webp_sha256"):
+                errors.append(f"patches/webp/{twin_name} does not match the manifest — {fix}")
+                continue
+            shutil.copy2(twin, SITE / "images" / twin_name)
+            src_names.add(twin_name)
+            ours += 1
+        for f in OUR_WEBP_DIR.glob("*.webp"):
+            if f"{f.stem}.png" not in manifest:
+                errors.append(f"patches/webp/{f.name} has no manifest row — {fix}")
     site_names = set()
     for pat in IMAGE_GLOBS:
         site_names |= {p.name for p in (SITE / "images").glob(pat)}
     pruned = sorted(site_names - src_names)
     for name in pruned:
         (SITE / "images" / name).unlink()
-    print(f"images: copied {copied}" +
+    print(f"images: copied {copied} from her export, {ours} lossless twin(s) from patches/webp" +
           (f", PRUNED {len(pruned)} stale: {', '.join(pruned)}" if pruned else ""))
 
     # --- i18n dictionaries (key remap applies to i18n.js only) ---

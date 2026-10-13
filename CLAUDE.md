@@ -265,6 +265,19 @@ Shipped 2026-08-11 @ `5fdb5de`; her first revision landed 2026-08-13 @ `4e95bbf`
   `hero.png` (1280w vs ~2900 need), `growth-campaigns.png`,
   `onboarding-flow.png`, `discovery-before/after.png`. Her newer exports are
   fine (bnl-*/tw-* are 1600–2048px).
+- **WebP: every PNG gets a twin, and OURS are LOSSLESS (AC, 2026-10-13: "must
+  not compromise quality — it is her portfolio").** Ceci's export ships 50 lossy
+  twins (hers always win); the 31 PNGs without one get a pixel-identical
+  lossless twin from `python3 scripts/make_webp_twins.py` → `patches/webp/`
+  (+ `manifest.json` pinning each source PNG's SHA-256). `integrate_2026.py`
+  copies them into `site/images` and ERRORS if a PNG changed since its twin was
+  made, if Ceci now ships her own twin, or if a twin lacks a manifest row — the
+  fix is always to re-run the generator. **After every drop: run the generator,
+  then the build.** Never emit lossy twins from our side: measured, lossy q95 on
+  her UI screenshots falls to PSNR ~37 dB with pixel errors up to 159/255, and
+  on flat UI is LARGER than lossless. Generator needs Pillow+WebP (present in
+  cloud sessions; on the Mac it is a NEW dep → ECVP, run it in the cloud).
+  Decision record: `docs/decisions/2026-10-13-lossless-webp-twins.md`.
 - i18n: EN default + zh-Hant. `i18n.js` = base dict; **`i18n-cases.js` = overlay
   dict** loaded after it (case-page body text — the 2 newest pages are fully
   bilingual, the 4 older ones are EN-only by design). Ceci edits with

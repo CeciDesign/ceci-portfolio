@@ -1,0 +1,250 @@
+{
+ "airdrop-03.png": {
+  "mode": "lossless",
+  "pixel_exact": true,
+  "png_bytes": 510770,
+  "png_sha256": "48f6c38df5f838cd421116801787283102d921e37c810eb6fea258a4bb60df7e",
+  "webp_bytes": 300154,
+  "webp_sha256": "76aafd61b0efaf6efa766ff8b00cf01660bdba4eeb3a4bdcf87ac9b6dcb71c3b"
+ },
+ "apollox.png": {
+  "mode": "lossless",
+  "pixel_exact": true,
+  "png_bytes": 761888,
+  "png_sha256": "c3c959657c50330cea9929738208d1c961dc79f9a3b009afe0c8ef3f1077f199",
+  "webp_bytes": 414102,
+  "webp_sha256": "3e2c2e1c6fbc6130eba7d7e73c540dd8ad1cde4065d3da73957093a2cf40c4a1"
+ },
+ "app-01.png": {
+  "mode": "lossless",
+  "pixel_exact": true,
+  "png_bytes": 97244,
+  "png_sha256": "800c70e48f713d50c1361b576a7abe49a2840e3aaf855dc6b0241e308cada506",
+  "webp_bytes": 39272,
+  "webp_sha256": "c3d8378959d90683aa6f273fb9f4e842ba8a4bc7d42cf5af3dcf44514dc59416"
+ },
+ "app-02.png": {
+  "mode": "lossless",
+  "pixel_exact": true,
+  "png_bytes": 85474,
+  "png_sha256": "5579baec5ba94c9def1d4b6e8020abaaa8fba6b769952d0e5a516e59b26c531a",
+  "webp_bytes": 30924,
+  "webp_sha256": "e0b749c74a1f13224ace5648097b468639ad1d63845e58ddb46d3091ed3393a8"
+ },
+ "app-06.png": {
+  "mode": "lossless",
+  "pixel_exact": true,
+  "png_bytes": 572710,
+  "png_sha256": "77269b03896b168f8edcdeb1c3ceef69b89a5502d921a25f870689d1255debeb",
+  "webp_bytes": 343886,
+  "webp_sha256": "e9a1aa7f569ebbae36ca3c376b59ed7cf06d3a3613ff43dda3c3c2bc8f8de57b"
+ },
+ "bet-01.png": {
+  "mode": "lossless",
+  "pixel_exact": true,
+  "png_bytes": 431876,
+  "png_sha256": "e17f911c9f51b71e27844caebdab4a34a1967b668d8bfc8d58c2bcdd8708a573",
+  "webp_bytes": 280150,
+  "webp_sha256": "39aadef5fc61a1b52811513e621e2cff1a9cef3995ec54e1fdbc65dff0312ebd"
+ },
+ "binance-01.png": {
+  "mode": "lossless",
+  "pixel_exact": true,
+  "png_bytes": 213703,
+  "png_sha256": "491b5689db049739c6a3431eca9369127fa56ab69bbd417a7d0c609fe2a648cf",
+  "webp_bytes": 106296,
+  "webp_sha256": "1ab700fdb0638633734396abd011f15437f1daebc719f1c37d3c64e9ab8c35a9"
+ },
+ "binance-02.png": {
+  "mode": "lossless",
+  "pixel_exact": true,
+  "png_bytes": 381635,
+  "png_sha256": "7c44dd0e1f93e9b95018eed33de7448d98ecfff41729e3ae2ebd485a05017291",
+  "webp_bytes": 183698,
+  "webp_sha256": "f68124e3b151cf7ada1d725e8b49b4861d5759e5a474a5a7502791b56d917781"
+ },
+ "binance-leaderboard.png": {
+  "mode": "lossless",
+  "pixel_exact": true,
+  "png_bytes": 489628,
+  "png_sha256": "688167758961cb620718e1fe119768c9ba16aa0f7428d52e1b05bda62df3edaf",
+  "webp_bytes": 252688,
+  "webp_sha256": "2f7bf710561aebe59281cf62fa18df293acb3ae8bd159a4ab49f6154a7eea66e"
+ },
+ "bnct-app-01.png": {
+  "mode": "lossless",
+  "pixel_exact": true,
+  "png_bytes": 249188,
+  "png_sha256": "2a14c1817f12bd40cf0e3a3ec760c2d348ffad4cd1eccd73abfd37d1d9a2deef",
+  "webp_bytes": 119660,
+  "webp_sha256": "3cc1777c420f48bbdda192cec373739d534988cb66a962da606de843f5d2fcad"
+ },
+ "bnct-app-02.png": {
+  "mode": "lossless",
+  "pixel_exact": true,
+  "png_bytes": 188462,
+  "png_sha256": "7b436c00e71ce385ffe99d8fd2953843a8803fdd7bd2aafc454f61f60529d30f",
+  "webp_bytes": 84454,
+  "webp_sha256": "63848e4e022603747c113774ab0a481f891a41c1344b922992995424a6993aba"
+ },
+ "bnct-web-01.png": {
+  "mode": "lossless",
+  "pixel_exact": true,
+  "png_bytes": 233798,
+  "png_sha256": "6139db3a7e349c26994958f399e67fe074800a4881899792507f712b47e1ca53",
+  "webp_bytes": 117492,
+  "webp_sha256": "6044cb0a2624d750536f4422bda00cc240af8431a27bacd58c7cafd3491e8199"
+ },
+ "bnct-web-04.png": {
+  "mode": "lossless",
+  "pixel_exact": true,
+  "png_bytes": 208369,
+  "png_sha256": "b7f5cfd7f58aff37dca69a6818c098cd22aadf2e863040aadcd352db31ccaaab",
+  "webp_bytes": 99178,
+  "webp_sha256": "5117de0d32f8603c800f48cb1fb03ce80abd4838a9bab4bc3997c9b03584588d"
+ },
+ "bnct-web-05.png": {
+  "mode": "lossless",
+  "pixel_exact": true,
+  "png_bytes": 335122,
+  "png_sha256": "217b79f2f9d83822deaedf2e0dc67d4df8e31dd82c5d4cd6ee1a4e50deca1b77",
+  "webp_bytes": 167556,
+  "webp_sha256": "5c9b6f940d98c22dfa44965f72368d91dbc0a9e0e1d0fbff92d3f2db2065b619"
+ },
+ "bnf-after-01-1.png": {
+  "mode": "lossless",
+  "pixel_exact": true,
+  "png_bytes": 277432,
+  "png_sha256": "a8fd79ddf32f8efee3afeb68b2a307cf8dca60b4f69841c691818f503d42aecf",
+  "webp_bytes": 159040,
+  "webp_sha256": "2199651f39e84baacce2fcec4b0188491adc268239e7e844dc32db4dc8ad7025"
+ },
+ "bnf-after-01.png": {
+  "mode": "lossless",
+  "pixel_exact": true,
+  "png_bytes": 411054,
+  "png_sha256": "aa357f4e5c07704bd95d5fbb413cb33665d1ab21a33acab227fb19c288a9e56c",
+  "webp_bytes": 163484,
+  "webp_sha256": "4267c267d9623754cbe4b04daf6355161498756aed8e32912284543a04aec2d7"
+ },
+ "bnf-battle-01.png": {
+  "mode": "lossless",
+  "pixel_exact": true,
+  "png_bytes": 277432,
+  "png_sha256": "a8fd79ddf32f8efee3afeb68b2a307cf8dca60b4f69841c691818f503d42aecf",
+  "webp_bytes": 159040,
+  "webp_sha256": "2199651f39e84baacce2fcec4b0188491adc268239e7e844dc32db4dc8ad7025"
+ },
+ "bnf-battle-03.png": {
+  "mode": "lossless",
+  "pixel_exact": true,
+  "png_bytes": 174081,
+  "png_sha256": "b6f03beca947f76ba6a15d8a01e8d3947115145b091b4e3f86cf9eec8d02afdb",
+  "webp_bytes": 98778,
+  "webp_sha256": "3fd316a9b6cc8407f9345bf8371a1f277975ef1e169b2f4bc14d4b4a3b8ab5b1"
+ },
+ "bnl-app-01.png": {
+  "mode": "lossless",
+  "pixel_exact": true,
+  "png_bytes": 257291,
+  "png_sha256": "2652676045d9768da863b1eac0c5c078b42ffd3e72a2f70438e61543990212cf",
+  "webp_bytes": 112586,
+  "webp_sha256": "d36b9db96bdc784cb81933380030a7460b807b5908d406a7f24815c4243ecb7e"
+ },
+ "bnl-app-03.png": {
+  "mode": "lossless",
+  "pixel_exact": true,
+  "png_bytes": 301548,
+  "png_sha256": "ff8ffef1d484de1dd63294c87f6d5268904d088acd1ce81e265707dec0682ac0",
+  "webp_bytes": 149452,
+  "webp_sha256": "ace2879a2121bd4fced1070c1720160b28a1c520a8672466bf498a69c82af466"
+ },
+ "bnl-app-04.png": {
+  "mode": "lossless",
+  "pixel_exact": true,
+  "png_bytes": 250535,
+  "png_sha256": "940efdf334b5f14c76eab7a8e6e4c0ee824bf78a1ed4cbb07c05a2d30307777a",
+  "webp_bytes": 120372,
+  "webp_sha256": "2e301b69a237021728f9dfac3bf65856a5b70f45412ee056c6541f3858117ba4"
+ },
+ "bnl-web-01.png": {
+  "mode": "lossless",
+  "pixel_exact": true,
+  "png_bytes": 564707,
+  "png_sha256": "f0a72ec58671bf93318a7d999a0f98e47240349152240738f1735d99dd017d7f",
+  "webp_bytes": 317868,
+  "webp_sha256": "4b365c62909c894f7c1bc541b8b813062d36f468c509af7461420714e4224bc2"
+ },
+ "borrow-01.png": {
+  "mode": "lossless",
+  "pixel_exact": true,
+  "png_bytes": 191542,
+  "png_sha256": "a2ada431887d7fc8821849d84ee513c4f97ae3204cd421a67cc30da6475b2535",
+  "webp_bytes": 79830,
+  "webp_sha256": "1663e70e1e10abc9be27d42583d73c4565ba6db1ddebfd915ab2cadd1a9fe07e"
+ },
+ "borrow-02.png": {
+  "mode": "lossless",
+  "pixel_exact": true,
+  "png_bytes": 159328,
+  "png_sha256": "e6bd106b4f9cc3550ceceacbc1b11a2b65c5daef7be2bce7ace3172ee461b711",
+  "webp_bytes": 42286,
+  "webp_sha256": "846012609ca3debc31c90779cadb7074c34164b2778a05511c718f39e1d95a10"
+ },
+ "borrow-04.png": {
+  "mode": "lossless",
+  "pixel_exact": true,
+  "png_bytes": 233083,
+  "png_sha256": "0743268447639b4cd9e6127f77359bf31066cd545dfb2a904623ceadb8660acb",
+  "webp_bytes": 96528,
+  "webp_sha256": "92a28c927086c21cc2e40793bd989bee482a8f6fdedc080580fce92a68ebf3b2"
+ },
+ "discovery-before.png": {
+  "mode": "lossless",
+  "pixel_exact": true,
+  "png_bytes": 190833,
+  "png_sha256": "c3e8f797c15d86b0df99f6bc1c2692c37dd71e1efc1a1e98f493d11b1ed65327",
+  "webp_bytes": 112616,
+  "webp_sha256": "5a6144bdff4e612f0296c3b1d41d7110087d2c432f8c5599282c5ab36e5214e0"
+ },
+ "drift-growth.png": {
+  "mode": "lossless",
+  "pixel_exact": true,
+  "png_bytes": 623540,
+  "png_sha256": "2f11867ee4e249db404d7c3513fd7a06840ca1144e1251e30807693e5cb1fff3",
+  "webp_bytes": 388528,
+  "webp_sha256": "61199fb57595f076f5b658f2fa1f825eb2c7ef7f75998c03a9820c7c8370b99f"
+ },
+ "foundation-02.png": {
+  "mode": "lossless",
+  "pixel_exact": true,
+  "png_bytes": 621674,
+  "png_sha256": "a82483f6c138d7f325864806c894b201fb348de753c765b4a40150ddf0d9f8b9",
+  "webp_bytes": 380802,
+  "webp_sha256": "1e363eb5c5cf502cefd932fd2c179cd44cc1f1578b9c896d0f512521357e47f1"
+ },
+ "hoyabit-landing.png": {
+  "mode": "lossless",
+  "pixel_exact": true,
+  "png_bytes": 610963,
+  "png_sha256": "141cf16bbac7b3bbb88ab2505144c5e83c5fd3c9e6c01f4cb46598470b1e7a72",
+  "webp_bytes": 354232,
+  "webp_sha256": "19256c1c941622d38b14ec65c18d926d433457675d1aad2f98db228088b6c707"
+ },
+ "tw-feedback.png": {
+  "mode": "lossless",
+  "pixel_exact": true,
+  "png_bytes": 539661,
+  "png_sha256": "3b2be71f3e424ed2eb4112c0f0d5bc4c2cb947be55a95d0797766a1e148842a5",
+  "webp_bytes": 321936,
+  "webp_sha256": "62205b89e43df9c066b0afe80f1763ce1c563ff058b71d11a03fa31e267db4f6"
+ },
+ "x-xyz.png": {
+  "mode": "lossless",
+  "pixel_exact": true,
+  "png_bytes": 392404,
+  "png_sha256": "7ceb82b2eabf2863491ea171a2e395273ce1a10e7da42a82137abc9ad5d978b6",
+  "webp_bytes": 230392,
+  "webp_sha256": "f0ef4ff4a9cce0b29ca3372ecaac1edf031351d5bf6ced7ca7d2fd9ced986520"
+ }
+}
