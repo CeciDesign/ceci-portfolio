@@ -91,13 +91,26 @@ in clearly-visible territory for UI screenshots:
 The rest sit at 37–46 dB (fine at display size). Full table in the session
 log of 2026-10-13.
 
-**Not acted on** — the rule "her twin wins" stands, and a pixel judgement
-needs eyes, not a number (cost-discipline rule). If AC looks at those pages
-on a Retina display and agrees they are soft, the fix is a one-line policy
-change: let the generator also emit lossless twins for her twins below a PSNR
-threshold and have the build prefer ours for those. Cost: those 9 would grow
-from ~430 KB total to roughly 1.3 MB (lossless ≈ 50% of PNG). Alternative:
-ask Ceci to re-export those 9 at a higher WebP quality (q ≥ 90).
+**Acted on (AC, same day: "fix her 9 low quality webp images too").** The
+generator now measures every twin of hers; below `OVERRIDE_BELOW_DB = 35.0`
+it emits a lossless replacement that the build serves instead of hers. 35 dB
+was chosen because it catches exactly these 9 and nothing else (the next of
+hers is 36.8 dB). Each override row pins the SHA-256 of *her* twin: when she
+re-exports that image the build refuses the stale override until the
+generator re-measures, and a re-export at or above 35 dB simply wins back.
+Verified against broken input: a changed twin of hers → build error; a
+lossless re-export of hers → override dropped on the next generator run; her
+original restored → override returns.
+
+Byte cost of the 9 overrides: 432 KB (hers) → 1518 KB (ours, lossless), i.e.
+about +1.1 MB spread over the pages that use them. Site total is now
+15.8 MB (before today) → 11.0 MB (lossless twins) → 12.1 MB (with overrides).
+
+The 14 of her twins between 36.8 and 40 dB were left as hers: at display size
+they are fine, and the bar is deliberately set at the visible cases only.
+
+Alternative for the long run: ask Ceci to re-export those 9 at WebP
+quality ≥ 90 — a good re-export of hers replaces our override automatically.
 
 ## GLOBAL CANDIDATE
 

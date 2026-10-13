@@ -1,4 +1,30 @@
 {
+ "airdrop-01.png": {
+  "hers_bytes": 75648,
+  "hers_max_err": 255,
+  "hers_psnr_db": 32.7,
+  "hers_sha256": "ae0dfc2157d67d68dc20b3ffbf59b5db605a373cf162ba05ef4354b0e0accd6b",
+  "kind": "override",
+  "mode": "lossless",
+  "pixel_exact": true,
+  "png_bytes": 628510,
+  "png_sha256": "780a094907efc8a295dd2df6a335e77aa4cea398bb3286d32852ed6443e585df",
+  "webp_bytes": 397284,
+  "webp_sha256": "059dac30da6449aaa060a41eeda68675425e1b200a24506f06777a46b9af2e1c"
+ },
+ "airdrop-02.png": {
+  "hers_bytes": 85088,
+  "hers_max_err": 255,
+  "hers_psnr_db": 32.6,
+  "hers_sha256": "9b6889c7953ace35ea7eb23bbedb5685b02ec41054b2663a13c268041db73a29",
+  "kind": "override",
+  "mode": "lossless",
+  "pixel_exact": true,
+  "png_bytes": 646452,
+  "png_sha256": "cfe04180b6f92c9e0254abfb127d7e3560b89cd73d29cfb280a70cbf1ad763e9",
+  "webp_bytes": 381232,
+  "webp_sha256": "68034bd269939d8f4fa820557e40b1c8176612d5e2fad24d05cb9e1fac843ac9"
+ },
  "airdrop-03.png": {
   "mode": "lossless",
   "pixel_exact": true,
@@ -31,6 +57,45 @@
   "webp_bytes": 30924,
   "webp_sha256": "e0b749c74a1f13224ace5648097b468639ad1d63845e58ddb46d3091ed3393a8"
  },
+ "app-03.png": {
+  "hers_bytes": 23642,
+  "hers_max_err": 123,
+  "hers_psnr_db": 31.4,
+  "hers_sha256": "c76c1e7aef15c1818342983554e88ace6aa320e79504ad47de31a1e4826f6819",
+  "kind": "override",
+  "mode": "lossless",
+  "pixel_exact": true,
+  "png_bytes": 56300,
+  "png_sha256": "42a027e4fcd22191d451232010672807db076959b0dac8c0c24257aeb6cffb4c",
+  "webp_bytes": 20006,
+  "webp_sha256": "1a3182de95e76617623358af85cb264c86445f9f64b79e9513a658d53152a050"
+ },
+ "app-04.png": {
+  "hers_bytes": 19214,
+  "hers_max_err": 124,
+  "hers_psnr_db": 31.5,
+  "hers_sha256": "4fbc5fa2cb373be506a1cb9a08c534852e438afc794ef94eaf94e010840ce1d7",
+  "kind": "override",
+  "mode": "lossless",
+  "pixel_exact": true,
+  "png_bytes": 66484,
+  "png_sha256": "8b12abfeba39aeda96b9685461c4247636975938067f5aa024db64b20c227bb5",
+  "webp_bytes": 26036,
+  "webp_sha256": "b8ccadeaa06711cdc9f43480d26556756e9156b4c7c736add570fa74949b80d4"
+ },
+ "app-05.png": {
+  "hers_bytes": 21704,
+  "hers_max_err": 125,
+  "hers_psnr_db": 31.4,
+  "hers_sha256": "b23a7cc56d1e34e4835611d09481c055bf30e659dc1d9be6cc93bed439fdec48",
+  "kind": "override",
+  "mode": "lossless",
+  "pixel_exact": true,
+  "png_bytes": 104534,
+  "png_sha256": "27bf1f2c5fefe4a141e2826e53d0cfd847768df58c7afba3af590f820e35d437",
+  "webp_bytes": 42662,
+  "webp_sha256": "b7d87465586ac58b47ddcd803d116a5b8f2669b1ceb5bf4c11d8f79c754f0c1c"
+ },
  "app-06.png": {
   "mode": "lossless",
   "pixel_exact": true,
@@ -38,6 +103,19 @@
   "png_sha256": "77269b03896b168f8edcdeb1c3ceef69b89a5502d921a25f870689d1255debeb",
   "webp_bytes": 343886,
   "webp_sha256": "e9a1aa7f569ebbae36ca3c376b59ed7cf06d3a3613ff43dda3c3c2bc8f8de57b"
+ },
+ "app-07.png": {
+  "hers_bytes": 49654,
+  "hers_max_err": 125,
+  "hers_psnr_db": 30.8,
+  "hers_sha256": "d49265e6ff8221f13849a62db425a25117540a28ae16cae1a7f6f523ae4c0b57",
+  "kind": "override",
+  "mode": "lossless",
+  "pixel_exact": true,
+  "png_bytes": 112058,
+  "png_sha256": "2c85cbe079eb9afb6bfead630ab4dfaa5a95ddba59969a15ed6a432d53267775",
+  "webp_bytes": 40700,
+  "webp_sha256": "af375e0c9d89db5b0a1616fa17983c1155eafff40ba9035c3e3453aa880e39bf"
  },
  "bet-01.png": {
   "mode": "lossless",
@@ -143,6 +221,19 @@
   "webp_bytes": 98778,
   "webp_sha256": "3fd316a9b6cc8407f9345bf8371a1f277975ef1e169b2f4bc14d4b4a3b8ab5b1"
  },
+ "bnf-iteration-01.png": {
+  "hers_bytes": 97922,
+  "hers_max_err": 180,
+  "hers_psnr_db": 33.9,
+  "hers_sha256": "ff9ae92c5cbd3d3016225dc5718ddd6e7fb718a54fd9a75ecf0eb486927d4a5b",
+  "kind": "override",
+  "mode": "lossless",
+  "pixel_exact": true,
+  "png_bytes": 611094,
+  "png_sha256": "11bdc19695824a9fc882fcd752599e165b9078593f81ab870180bfe636eaa1e7",
+  "webp_bytes": 352460,
+  "webp_sha256": "2b367510c06df663a74a184f6c110ce11143ca76975349ee4b35cb943029a367"
+ },
  "bnl-app-01.png": {
   "mode": "lossless",
   "pixel_exact": true,
@@ -199,6 +290,19 @@
   "webp_bytes": 96528,
   "webp_sha256": "92a28c927086c21cc2e40793bd989bee482a8f6fdedc080580fce92a68ebf3b2"
  },
+ "discovery-after.png": {
+  "hers_bytes": 18374,
+  "hers_max_err": 227,
+  "hers_psnr_db": 33.5,
+  "hers_sha256": "e90bef85ba23f70102aa8da56d2f60be747394ebdca21cdaf7e85fd57d88e86e",
+  "kind": "override",
+  "mode": "lossless",
+  "pixel_exact": true,
+  "png_bytes": 88119,
+  "png_sha256": "a503daf8821e4a6e59814f11bf86607a2895f4ef8b40a95d6b035923aad23200",
+  "webp_bytes": 50590,
+  "webp_sha256": "deceaf4ebe35c30e89d0595138d033e47e88b0d6e4af2aabd15aafcaa0ce5dea"
+ },
  "discovery-before.png": {
   "mode": "lossless",
   "pixel_exact": true,
@@ -222,6 +326,19 @@
   "png_sha256": "a82483f6c138d7f325864806c894b201fb348de753c765b4a40150ddf0d9f8b9",
   "webp_bytes": 380802,
   "webp_sha256": "1e363eb5c5cf502cefd932fd2c179cd44cc1f1578b9c896d0f512521357e47f1"
+ },
+ "growth-campaigns.png": {
+  "hers_bytes": 52138,
+  "hers_max_err": 153,
+  "hers_psnr_db": 31.7,
+  "hers_sha256": "1b196ef4392f449612ea930fe66d3971709b94e4bb6665a53f1d9aaf4d1ec4ad",
+  "kind": "override",
+  "mode": "lossless",
+  "pixel_exact": true,
+  "png_bytes": 380585,
+  "png_sha256": "ac88a47965c0fd25d6cab9cc07d6461ac7ebcec849e63a50f0cb68da3c70b80b",
+  "webp_bytes": 243658,
+  "webp_sha256": "f1fb9b4baf527176d5c023a89308f0b33cd2a5f12801fe6e9af8bc7e7a5f2661"
  },
  "hoyabit-landing.png": {
   "mode": "lossless",

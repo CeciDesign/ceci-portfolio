@@ -75,7 +75,11 @@ WEBP_SKIP = {
 # patches/webp/manifest.json pins the SHA-256 of the PNG each twin came from, and
 # the build below REFUSES a twin whose PNG changed since (a stale twin would
 # silently show an old screenshot), or whose PNG now has a twin from Ceci (hers
-# wins). Fix is always: python3 scripts/make_webp_twins.py, then re-run this.
+# wins). Rows of kind "override" are the exception: her twin measured below the
+# generator's PSNR bar (9 of her 50 at 30.8-33.9 dB on 2026-10-13), so ours is
+# served instead — pinned to the SHA-256 of HER twin, so a re-export of hers
+# forces a re-measure. Fix is always: python3 scripts/make_webp_twins.py, then
+# re-run this.
 OUR_WEBP_DIR = ROOT / "patches" / "webp"
 OUR_WEBP_MANIFEST = OUR_WEBP_DIR / "manifest.json"
 
@@ -494,7 +498,7 @@ def main():
             copied += 1
     # our lossless twins (see OUR_WEBP_DIR above) — verified against the PNG
     # they were made from, and never over a twin Ceci ships herself
-    ours = 0
+    ours, overridden = 0, []
     if OUR_WEBP_MANIFEST.exists():
         manifest = json.loads(OUR_WEBP_MANIFEST.read_text(encoding="utf-8"))
         for png_name, row in sorted(manifest.items()):
@@ -505,7 +509,20 @@ def main():
                 errors.append(f"patches/webp: {png_name} is gone from her export but the "
                               f"manifest still lists it — {fix}")
                 continue
-            if twin_name in src_names:
+            if row.get("kind") == "override":
+                # ours replaces HER lossy twin (below the generator's PSNR bar),
+                # but only the exact file it was measured against: if she
+                # re-exports, the override must be re-measured first.
+                hers = SRC / "images" / twin_name
+                if not hers.exists():
+                    errors.append(f"patches/webp: {twin_name} override but Ceci no longer "
+                                  f"ships that twin — {fix}")
+                    continue
+                if hashlib.sha256(hers.read_bytes()).hexdigest() != row.get("hers_sha256"):
+                    errors.append(f"patches/webp: Ceci's {twin_name} CHANGED since the override "
+                                  f"was measured — {fix}")
+                    continue
+            elif twin_name in src_names:
                 errors.append(f"patches/webp: Ceci now ships her own {twin_name}; ours is "
                               f"redundant (hers wins) — {fix}")
                 continue
@@ -522,9 +539,11 @@ def main():
             if hashlib.sha256(twin.read_bytes()).hexdigest() != row.get("webp_sha256"):
                 errors.append(f"patches/webp/{twin_name} does not match the manifest — {fix}")
                 continue
-            shutil.copy2(twin, SITE / "images" / twin_name)
+            shutil.copy2(twin, SITE / "images" / twin_name)   # overwrites hers if override
             src_names.add(twin_name)
             ours += 1
+            if row.get("kind") == "override":
+                overridden.append(f"{twin_name} (hers {row.get('hers_psnr_db')} dB)")
         for f in OUR_WEBP_DIR.glob("*.webp"):
             if f"{f.stem}.png" not in manifest:
                 errors.append(f"patches/webp/{f.name} has no manifest row — {fix}")
@@ -535,6 +554,8 @@ def main():
     for name in pruned:
         (SITE / "images" / name).unlink()
     print(f"images: copied {copied} from her export, {ours} lossless twin(s) from patches/webp" +
+          (f" of which {len(overridden)} REPLACE her lossy twins: {', '.join(overridden)}"
+           if overridden else "") +
           (f", PRUNED {len(pruned)} stale: {', '.join(pruned)}" if pruned else ""))
 
     # --- i18n dictionaries (key remap applies to i18n.js only) ---

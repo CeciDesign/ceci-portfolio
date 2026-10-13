@@ -20,6 +20,15 @@ SHA-256 of the PNG each twin was made from; integrate_2026.py refuses to serve
 a twin whose PNG has since changed, or whose PNG now has a twin from Ceci
 (hers always wins), and tells you to re-run this script.
 
+ALSO (AC, 2026-10-13, "fix her 9 low quality webp images too"): Ceci's own
+twins are lossy. Measured against her PNGs, 9 of 50 sit at 30.8-33.9 dB PSNR
+with per-pixel errors up to 255 — visibly soft UI screenshots. Any twin of hers
+below OVERRIDE_BELOW_DB gets a lossless twin from us that the build serves
+INSTEAD of hers. The manifest pins the SHA-256 of her twin too, so the moment
+she re-exports that image the override is re-measured: a good re-export wins
+back automatically, a still-bad one is overridden again. The next-lowest of her
+twins is 36.8 dB, so 35 dB catches exactly those 9 and nothing else.
+
 Rules, enforced here:
   - a twin is written only if it round-trips PIXEL-EXACT (decoded RGBA == PNG);
   - a twin is kept only if it is < KEEP_BELOW of the PNG's size — a twin that
@@ -48,6 +57,7 @@ SRC = ROOT / "2026 portfolio" / "images"
 OUT = ROOT / "patches" / "webp"
 MANIFEST = OUT / "manifest.json"
 KEEP_BELOW = 0.85      # twin must be smaller than 85% of the PNG to be worth serving
+OVERRIDE_BELOW_DB = 35.0   # her lossy twin below this PSNR (vs her PNG) is replaced by ours
 ENCODE = dict(lossless=True, quality=100, method=6)   # method 6 = slowest, smallest
 
 
@@ -59,6 +69,23 @@ def load_manifest():
     if MANIFEST.exists():
         return json.loads(MANIFEST.read_text(encoding="utf-8"))
     return {}
+
+
+def psnr_vs_png(png_path, webp_path):
+    """(PSNR in dB over RGB, max abs channel error) of her twin vs her PNG;
+    (None, None) if the twin does not decode or is not the same size."""
+    from PIL import Image
+    import numpy as np
+    try:
+        a = np.asarray(Image.open(png_path).convert("RGB"), dtype=np.float64)
+        b = np.asarray(Image.open(webp_path).convert("RGB"), dtype=np.float64)
+    except Exception:
+        return None, None
+    if a.shape != b.shape:
+        return None, None
+    mse = float(np.mean((a - b) ** 2))
+    psnr = 99.0 if mse == 0 else 10 * np.log10(255 ** 2 / mse)
+    return round(float(psnr), 1), int(np.abs(a - b).max())
 
 
 def encode_exact(png_path):
@@ -83,75 +110,105 @@ def encode_exact(png_path):
     return data
 
 
+def desired_rows(pngs, her_twins):
+    """What the manifest SHOULD contain, by PNG name: 'twin' rows for PNGs she
+    ships without a twin, 'override' rows for her twins below the PSNR bar.
+    Measuring is the only cost here; encoding happens only for stale rows."""
+    want = {}
+    for name, png in sorted(pngs.items()):
+        stem = name[:-4]
+        hers = SRC / f"{stem}.webp"
+        if stem not in her_twins:
+            want[name] = {"kind": "twin"}
+            continue
+        if hers.stat().st_size == 0:
+            continue   # a zero-byte twin is handled by WEBP_SKIP in the build, not here
+        db, err = psnr_vs_png(png, hers)
+        if db is not None and db < OVERRIDE_BELOW_DB:
+            want[name] = {"kind": "override", "hers_sha256": sha256(hers),
+                          "hers_psnr_db": db, "hers_max_err": err}
+    return want
+
+
+def row_is_current(row, want, png, twin):
+    if row is None or row.get("kind", "twin") != want["kind"]:
+        return False
+    if row.get("png_sha256") != sha256(png):
+        return False
+    if want["kind"] == "override" and row.get("hers_sha256") != want["hers_sha256"]:
+        return False
+    if row.get("kept_png"):
+        return True
+    return twin.exists() and row.get("webp_sha256") == sha256(twin)
+
+
 def main(check_only=False):
     OUT.mkdir(parents=True, exist_ok=True)
     manifest = load_manifest()
     pngs = {p.name: p for p in SRC.glob("*.png")}
     her_twins = {p.stem for p in SRC.glob("*.webp")}
-    wanted = {n: p for n, p in pngs.items() if p.stem not in her_twins}
+    want = desired_rows(pngs, her_twins)
 
     problems, changed = [], 0
+    fix = "re-run make_webp_twins.py"
 
-    # 1. drop manifest rows / files whose reason is gone
-    for name in sorted(manifest):
+    # 1. rows whose reason is gone (PNG dropped, she now ships a good twin, ...)
+    for name in sorted(set(manifest) - set(want)):
         stem = name[:-4]
-        why = None
         if name not in pngs:
             why = "PNG no longer in her export"
-        elif stem in her_twins:
+        elif manifest[name].get("kind", "twin") == "override":
+            why = (f"Ceci's own {stem}.webp is now >= {OVERRIDE_BELOW_DB} dB "
+                   "(or changed) — hers wins again")
+        else:
             why = "Ceci now ships her own twin (hers wins)"
-        if why:
-            if check_only:
-                problems.append(f"{name}: twin is stale — {why}; re-run make_webp_twins.py")
-                continue
-            (OUT / f"{stem}.webp").unlink(missing_ok=True)
-            del manifest[name]
-            changed += 1
-            print(f"removed {stem}.webp — {why}")
+        if check_only:
+            problems.append(f"{name}: row is stale — {why}; {fix}")
+            continue
+        (OUT / f"{stem}.webp").unlink(missing_ok=True)
+        del manifest[name]
+        changed += 1
+        print(f"removed {stem}.webp — {why}")
 
-    # 2. stray files in patches/webp without a manifest row
+    # 2. stray files without a row
     for f in sorted(OUT.glob("*.webp")):
-        if f"{f.stem}.png" not in manifest:
+        if f"{f.stem}.png" not in want:
             if check_only:
-                problems.append(f"patches/webp/{f.name}: no manifest row; re-run make_webp_twins.py")
+                problems.append(f"patches/webp/{f.name}: no manifest row; {fix}")
             else:
                 f.unlink()
                 changed += 1
                 print(f"removed stray {f.name}")
 
-    # 3. (re)generate where missing or where the PNG changed
-    for name, png in sorted(wanted.items()):
+    # 3. (re)generate stale or missing rows
+    for name, w in sorted(want.items()):
         stem = name[:-4]
-        twin = OUT / f"{stem}.webp"
-        digest = sha256(png)
-        row = manifest.get(name)
-        current = (row is not None and row.get("png_sha256") == digest
-                   and (twin.exists() or row.get("kept_png")))
-        if current:
-            if twin.exists() and row.get("webp_sha256") != sha256(twin):
-                current = False
-        if current:
+        png, twin = pngs[name], OUT / f"{stem}.webp"
+        if row_is_current(manifest.get(name), w, png, twin):
             continue
         if check_only:
-            problems.append(f"{name}: twin missing or PNG changed since it was made; "
-                            "re-run make_webp_twins.py")
+            problems.append(f"{name}: twin missing, or PNG/her twin changed since it was made; {fix}")
             continue
         data = encode_exact(png)
         png_bytes = png.stat().st_size
         ratio = len(data) / png_bytes
-        if ratio >= KEEP_BELOW:
+        row = {"kind": w["kind"], "png_sha256": sha256(png), "png_bytes": png_bytes,
+               "webp_bytes": len(data)}
+        if w["kind"] == "override":
+            row.update({k: w[k] for k in ("hers_sha256", "hers_psnr_db", "hers_max_err")})
+            row["hers_bytes"] = (SRC / f"{stem}.webp").stat().st_size
+        if ratio >= KEEP_BELOW and w["kind"] == "twin":
             twin.unlink(missing_ok=True)
-            manifest[name] = {"png_sha256": digest, "png_bytes": png_bytes,
-                              "kept_png": True, "webp_bytes": len(data),
-                              "note": f"lossless twin would be {ratio:.0%} of the PNG — not worth serving"}
+            row.update({"kept_png": True,
+                        "note": f"lossless twin would be {ratio:.0%} of the PNG — not worth serving"})
             print(f"{name}: kept PNG (lossless twin {ratio:.0%} of PNG, below the bar)")
         else:
             twin.write_bytes(data)
-            manifest[name] = {"png_sha256": digest, "png_bytes": png_bytes,
-                              "webp_bytes": len(data), "webp_sha256": sha256(twin),
-                              "mode": "lossless", "pixel_exact": True}
-            print(f"{name}: {png_bytes // 1024} KB -> {len(data) // 1024} KB "
-                  f"({ratio:.0%}), lossless, pixel-exact")
+            row.update({"webp_sha256": sha256(twin), "mode": "lossless", "pixel_exact": True})
+            tag = (f"OVERRIDES hers ({w['hers_psnr_db']} dB, max err {w['hers_max_err']})"
+                   if w["kind"] == "override" else "lossless, pixel-exact")
+            print(f"{name}: {png_bytes // 1024} KB -> {len(data) // 1024} KB ({ratio:.0%}), {tag}")
+        manifest[name] = row
         changed += 1
 
     if check_only:
@@ -162,13 +219,17 @@ def main(check_only=False):
         return 0
 
     MANIFEST.write_text(json.dumps(manifest, indent=1, sort_keys=True) + "\n", encoding="utf-8")
-    served = [r for r in manifest.values() if not r.get("kept_png")]
-    before = sum(r["png_bytes"] for r in served)
-    after = sum(r["webp_bytes"] for r in served)
-    print(f"\n{len(served)} twin(s) in patches/webp/: {before // 1024} KB of PNG -> "
-          f"{after // 1024} KB of lossless WebP"
-          + (f" (-{100 - after * 100 // before}%)" if before else "")
-          + f"; {len(manifest) - len(served)} kept as PNG; {changed} change(s) this run")
+    twins = [r for r in manifest.values() if not r.get("kept_png") and r.get("kind", "twin") == "twin"]
+    overs = [r for r in manifest.values() if r.get("kind") == "override"]
+    b, a = sum(r["png_bytes"] for r in twins), sum(r["webp_bytes"] for r in twins)
+    print(f"\n{len(twins)} twin(s) for untwinned PNGs: {b // 1024} KB of PNG -> {a // 1024} KB "
+          f"of lossless WebP" + (f" (-{100 - a * 100 // b}%)" if b else ""))
+    if overs:
+        hb, ob = sum(r["hers_bytes"] for r in overs), sum(r["webp_bytes"] for r in overs)
+        print(f"{len(overs)} override(s) of her lossy twins below {OVERRIDE_BELOW_DB} dB: "
+              f"{hb // 1024} KB (hers) -> {ob // 1024} KB (ours, lossless)")
+    print(f"{sum(1 for r in manifest.values() if r.get('kept_png'))} kept as PNG; "
+          f"{changed} change(s) this run")
     return 0
 
 

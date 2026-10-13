@@ -267,12 +267,16 @@ Shipped 2026-08-11 @ `5fdb5de`; her first revision landed 2026-08-13 @ `4e95bbf`
   fine (bnl-*/tw-* are 1600–2048px).
 - **WebP: every PNG gets a twin, and OURS are LOSSLESS (AC, 2026-10-13: "must
   not compromise quality — it is her portfolio").** Ceci's export ships 50 lossy
-  twins (hers always win); the 31 PNGs without one get a pixel-identical
-  lossless twin from `python3 scripts/make_webp_twins.py` → `patches/webp/`
-  (+ `manifest.json` pinning each source PNG's SHA-256). `integrate_2026.py`
-  copies them into `site/images` and ERRORS if a PNG changed since its twin was
-  made, if Ceci now ships her own twin, or if a twin lacks a manifest row — the
-  fix is always to re-run the generator. **After every drop: run the generator,
+  twins; the 31 PNGs without one get a pixel-identical lossless twin from
+  `python3 scripts/make_webp_twins.py` → `patches/webp/` (+ `manifest.json`
+  pinning each source PNG's SHA-256). **Her twin wins unless it measures below
+  35 dB PSNR against her PNG** (AC, 2026-10-13: 9 of her 50 sat at 30.8–33.9 dB,
+  visibly soft) — those get a lossless override from us, pinned to the SHA-256
+  of HER twin so her next re-export is re-measured and wins back if good.
+  `integrate_2026.py` copies ours into `site/images` and ERRORS if a PNG or an
+  overridden twin changed since ours was made, if Ceci now ships a twin where we
+  had one, or if a twin lacks a manifest row — the fix is always to re-run the
+  generator. **After every drop: run the generator,
   then the build.** Never emit lossy twins from our side: measured, lossy q95 on
   her UI screenshots falls to PSNR ~37 dB with pixel errors up to 159/255, and
   on flat UI is LARGER than lossless. Generator needs Pillow+WebP (present in
